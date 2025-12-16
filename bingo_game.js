@@ -3,7 +3,7 @@
         let availableNumbers = [];
         let drawnNumbers = [];
         let isSpinning = false;
-        let currentDisplayNumber = '?';
+        let currentDisplayNumber = '';
         const bgMusic = document.getElementById("bgMusic");
         const toggleMusicBtn = document.getElementById("toggleMusic");
         let musicPlaying = false;
@@ -75,7 +75,7 @@
                 maxNumber = gameState.maxNumber;
                 availableNumbers = gameState.availableNumbers || [];
                 drawnNumbers = gameState.drawnNumbers || [];
-                currentDisplayNumber = gameState.currentDisplayNumber || '?';
+                currentDisplayNumber = '';
                 return true;
             }
             return false;
@@ -157,7 +157,7 @@
             document.getElementById('drawnCount').textContent = '0';
             document.getElementById('remainingCount').textContent = maxNumber;
             document.getElementById('historyNumbers').innerHTML = '';
-            document.getElementById('currentNumber').textContent = '?';
+            document.getElementById('currentNumber').textContent = '';
             
             document.getElementById('startBtn').style.display = 'inline-block';
             document.getElementById('resetBtn').style.display = 'inline-block';
@@ -306,7 +306,7 @@
             document.getElementById('setMaxBtn').disabled = false;
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('resetBtn').style.display = 'none';
-            document.getElementById('currentNumber').textContent = '?';
+            document.getElementById('currentNumber').textContent = '';
             document.getElementById('rangeDisplay').textContent = '-';
             document.getElementById('drawnCount').textContent = '0';
             document.getElementById('remainingCount').textContent = '-';
@@ -317,7 +317,7 @@
             availableNumbers = [];
             drawnNumbers = [];
             isSpinning = false;
-            currentDisplayNumber = '?';
+            currentDisplayNumber = '';
 
             // Xóa dữ liệu trong SessionStorage
             sessionStorage.removeItem('bingoGameState');
