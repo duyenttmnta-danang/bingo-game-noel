@@ -4,6 +4,9 @@
         let drawnNumbers = [];
         let isSpinning = false;
         let currentDisplayNumber = '?';
+        const bgMusic = document.getElementById("bgMusic");
+        const toggleMusicBtn = document.getElementById("toggleMusic");
+        let musicPlaying = false;
 
         // Tạo âm thanh (sử dụng Web Audio API)
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -184,6 +187,11 @@
             this.disabled = true;
 
             // playSpinSound();
+            // Tạm dừng nhạc khi quay
+            if (musicPlaying) {
+                bgMusic.pause();
+                toggleMusicBtn.textContent = "🔈";
+            }
 
             const bell = document.getElementById("bell");
             const sound = document.getElementById("bellSound");
@@ -202,12 +210,13 @@
             currentNumberEl.classList.remove("bingo-animate");
 
             let counter = 0;
-            const maxSpins = 90; // 50 lần * 100ms = 5 giây
+            const maxSpins = 57; // 50 lần * 100ms = 5 giây
             const intervalTime = 100; // 100ms
 
             const spinInterval = setInterval(() => {
                 const randomIndex = Math.floor(Math.random() * availableNumbers.length);
-                currentNumberEl.textContent = availableNumbers[randomIndex];
+                //currentNumberEl.textContent = availableNumbers[randomIndex];
+                currentNumberEl.textContent = "";
 
                 counter++;
 
@@ -251,7 +260,7 @@
                     setTimeout(() => {
                         currentNumberEl.classList.add("bingo-animate");
                         bellImg.src = bellImageWin;
-                    }, 9);
+                    }, 5);
                     // tắt hiệu ứng sau 1.2 giây
                     setTimeout(() => {
                         currentNumberEl.classList.remove("bingo-animate");
@@ -263,6 +272,13 @@
             setTimeout(() => {
                 bell.classList.remove("ringing");
             }, maxSpins * intervalTime); // = 5000ms = 5 giây
+
+            setTimeout(() => {
+                if (musicPlaying) { // dùng trạng thái lúc đầu
+                    bgMusic.play();
+                    toggleMusicBtn.textContent = "🔊";
+                }
+            }, maxSpins * intervalTime + 1000); // sau khi hiệu ứng quay + confetti kết thúc
         });
 
         function updateDisplay(number) {
@@ -307,11 +323,18 @@
             sessionStorage.removeItem('bingoGameState');
         });
 
-        const bgMusic = document.getElementById("bgMusic");
-        const toggleMusicBtn = document.getElementById("toggleMusic");
+        // Khi mở web, phát nhạc tự động
+        document.body.addEventListener("click", () => {
+            if (!musicPlaying) {
+                bgMusic.play().then(() => {
+                    musicPlaying = true;
+                    toggleMusicBtn.textContent = "🔊";
+                }).catch(err => console.log("Auto-play bị chặn:", err));
+            }
+        }, { once: true }); // chỉ cần click lần đầu
 
-        let musicPlaying = false;
 
+        // Nút bật/tắt nhạc thủ công
         toggleMusicBtn.addEventListener("click", () => {
             if (!musicPlaying) {
                 bgMusic.play();

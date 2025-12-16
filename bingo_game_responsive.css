@@ -159,7 +159,7 @@
             height: auto;
             cursor: pointer;
             transition: transform 0.2s ease;
-            filter: brightness(0.7);
+            filter: brightness(0.9);
         }
 
         /* Giữ vị trí tuyệt đối giữa ảnh chuông */
