@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Bingo</title>
+    <link rel="stylesheet" href="bingo_game_responsive.css">
+</head>
+<body>
+    <div class="container">
+        <h1><img src="images/bingo_title.png" alt="Mo ta anh"></h1>    
+
+        <div class="bell-container">
+            <img src="images/gift_close.png" id="bell" class="bell" alt="Christmas Bell">
+            <audio id="bellSound" src="audio/nhac-xo-so-15s-win.mp3"></audio> <!-- âm thanh chuông -->
+            <div id="numberWrapper">
+                <div id="currentNumber">?</div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="startBtn">Spin Number</button>
+        </div>
+
+        <div class="info-section">
+            <div class="info-box">
+                <h3>Range</h3>
+                <p id="rangeDisplay">-</p>
+            </div>
+            <div class="info-box">
+                <h3>Drawn</h3>
+                <p id="drawnCount">0</p>
+            </div>
+            <div class="info-box">
+                <h3>Remaining</h3>
+                <p id="remainingCount">-</p>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h3>History of Drawn Numbers</h3>
+            <div class="history-numbers" id="historyNumbers"></div>
+        </div>
+
+
+        <div class="bottom-panel" id="bottomPanel">
+            <button id="togglePanelBtn" class="panel-icon" title="Toggle Panel">
+                <img src="images/christmas_tree_icon.png" alt="Toggle" />
+            </button>
+
+            <div class="panel-content">
+
+                <audio id="bgMusic" loop>
+                    <source src="audio/nhac-nen-noel.mp3" type="audio/mpeg">
+                </audio>
+
+                <div class="setup-section">
+                    <div class="input-group">
+                        <label for="maxNumber">Max number:</label>
+                        <input type="number" id="maxNumber" min="1" value="75" placeholder="Nhập số max">
+                        <button id="setMaxBtn">Start</button>
+                        <button id="resetBtn">Play Again</button>
+                    </div>
+                </div>
+                <button id="toggleMusic" class="music-btn">🔈</button>
+            </div>
+        </div>
+    </div>
+    <script src="bingo_game.js"></script>
+</body>
+</html>

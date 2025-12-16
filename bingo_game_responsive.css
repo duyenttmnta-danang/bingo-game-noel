@@ -1,0 +1,954 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('images/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .container {
+            background: white;
+            border-radius: 3%;
+            padding: 1% 1.5%;
+            box-shadow: 0 2% 6% rgba(0, 0, 0, 0.3);
+            max-width: 55%;
+            max-height: 85%;
+            width: 100%;
+            position: relative;
+            overflow: visible;
+        }
+
+        /* confetti */
+        .confetti {
+            position: absolute;
+            z-index: 99999;
+            opacity: 0.9;
+        }
+
+        /* animation bung từ giữa */
+        @keyframes confettiExplode {
+            from {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translate(var(--x), var(--y)) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 1%;
+            font-size: clamp(1.2em, 4vw, 2em);
+            text-shadow: 0.2% 0.2% 0.4% rgba(0, 0, 0, 0.1);
+        }
+
+        h1 img {
+            max-width: 50%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .setup-section {
+            display: flex;
+            gap: 1.5em;
+            margin-bottom: 1em;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        input[type="number"] {
+            padding: 1.2em 2em;
+            border: 0.2em solid #146929;
+            border-radius: 1em;
+            font-size: 1.1em;
+            width: 12em;
+            text-align: center;
+        }
+
+        button {
+            padding: 1.2em 3em;
+            border: none;
+            border-radius: 1em;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        #setMaxBtn,#resetBtn {
+            background: #438a39;
+            color: white;
+        }
+
+        #setMaxBtn, #resetBtn:hover {
+            background: #027402;
+            transform: translateY(-2px);
+            box-shadow: 0 0.5em 1.5em rgba(59, 248, 90, 0.4);
+        }
+        
+        #resetBtn {
+            display: none;
+        }
+
+        #startBtn {
+            background: #e06868;
+            color: white;
+            font-size: 1.3em;
+            padding: 0.5em 2em;
+            display: none;
+            max-height: 2em;
+        }
+
+        #startBtn:hover:not(:disabled) {
+            background: #d12929;
+            transform: translateY(-2px);
+            box-shadow: 0 0.5em 1.5em rgba(187, 72, 72, 0.4);
+        }
+
+        #startBtn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        .bell-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1em auto;
+            position: relative; /* Bắt buộc để số định vị theo container */
+        }
+
+        /* Giữ nguyên dành cho ảnh chuông */
+        .bell {
+            width: 100%;
+            max-width: 18em;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            filter: brightness(0.7);
+        }
+
+        /* Giữ vị trí tuyệt đối giữa ảnh chuông */
+        #numberWrapper {
+            position: absolute;
+            top: 56%;
+            left: 52%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* Chỉ chứa số – nhận animation scale */
+        #currentNumber {
+            transform-origin: center center;
+
+            font-size: clamp(5.5em, 20vw, 13em);
+            font-weight: bold;
+            color: white;
+
+            -webkit-text-stroke: clamp(0.01em, 0.5vw, 0.02em) #b30000;
+
+            text-shadow:
+                0 0 0.025em rgba(255, 255, 255, 0.9),
+                0 0 0.05em rgba(255, 0, 0, 0.7),
+            0.01em 0.01em 0.05em rgba(0, 0, 0, 0.7);
+        }
+
+
+
+        /* Hiệu ứng rung */
+        .ringing {
+            animation: ring 0.5s ease-in-out infinite;
+        }
+
+        @keyframes ring {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-10deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spin-animation {
+            animation: spinNumber 0.5s linear forwards; /* hoặc infinite nếu muốn quay liên tục */
+        }
+
+        @keyframes spinNumber {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1em;
+            margin: 1.5em 0;
+        }
+
+        .info-box {
+            background: #f7fafc;
+            padding: 1em;
+            border-radius: 0.5em;
+            text-align: center;
+            border: 0.01em solid #e2e8f0;
+        }
+
+        .info-box h3 {
+            color: #000000;
+            margin-bottom: 0.5em;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .info-box p {
+            font-size: 2em;
+            font-weight: bold;
+            color: #078503;
+        }
+
+        .history-section {
+            margin-top: 0.5em;
+        }
+
+        .history-section h3 {
+            color: #333;
+            margin-bottom: 0.25em;
+            text-align: center;
+            font-size: 1.0em;
+        }
+
+        .history-numbers {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 70px));
+            justify-content: center;
+            gap: 0.5em;
+            max-height: 20.5em;
+            overflow-y: auto;
+            padding: 0.75em;
+            background: #d8f1da;
+            border-radius: 0.5em;
+        }
+
+        .history-number {
+            background-image: url("images/ball_green_3.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            text-shadow: 0 0 0.5em rgb(0, 0, 0);
+
+            width: 100%;
+            aspect-ratio: 1;
+            max-width: 2.5em;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(1.5em, 4vw, 2.0em);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%; /* vẫn giữ để click vùng tròn */
+            box-shadow: 0 0.015em 0.5em rgba(0, 0, 0, 0.2);
+
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.25em;
+            justify-content: center;
+            margin-top: 0.5em;
+            flex-wrap: wrap;
+        }
+
+        /* Hiệu ứng số phóng to rồi về lại */
+        @keyframes numberPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.4); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        /* hiệu ứng sáng lung linh */
+        @keyframes numberGlow {
+            0% { text-shadow: 0 0 0.625em #ff0000; }
+            50% { text-shadow: 0 0 1.25em #ffffff; }
+            100% { text-shadow: 0 0 0.625em #ff0000; }
+        }
+
+        /* class được bật khi có số mới */
+        .bingo-animate {
+            animation: numberPop 0.5s ease-out, numberGlow 1s ease-in-out;
+        }
+
+        .info-section {
+            display: none !important;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 0.625em;
+            height: 0.625em;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .music-btn {
+            /* position: fixed; */
+            top: 1.23em;
+            right: 1.25em;
+            background: #fff8;
+            border: none;
+            padding: 0.625em 1em;
+            border-radius: 0.6em;
+            cursor: pointer;
+            font-size: 1em;
+            backdrop-filter: blur(0.3em);
+            transition: 0.2s;
+        }
+        .music-btn:hover {
+            background: #747070cc;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -0.625em;
+            color: white;
+            user-select: none;
+            pointer-events: none;
+            font-size: 0.7em;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0.3;
+            }
+        }
+
+        .bottom-panel {
+            position: fixed;
+            bottom: 1em;
+            right: 1em;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-family: Arial, sans-serif;
+            max-width: calc(100vw - 1.875em);
+        }
+
+        /* Nút toggle: icon lớn, rõ ràng, nền sáng, bo tròn */
+        .panel-icon {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            width: 6.25em;
+            height:6.25em;
+            box-shadow: 0 0.3em 0.6em rgba(0,0,0,0.25);
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel-icon img {
+            width: 5em;  /* hoặc tuỳ chỉnh */
+            height: 5em;
+            object-fit: contain;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .panel-icon:hover {
+            background-color: #005500; /* tối hơn khi hover */
+        }
+
+        /* Nội dung panel */
+        .panel-content {
+            margin-top: 0.625em;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.7em 1em;
+            border-radius: 0.8em;
+            box-shadow: 0 0.315em 0.315em rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            gap: 0.625em;
+            min-width: 12em;
+        }
+
+        /* Các nút và input nhỏ gọn */
+        .panel-content .music-btn,
+        .panel-content .setup-section button,
+        .panel-content .setup-section input {
+            font-size: 0.9em;
+            padding: 0.375em 0.625em;
+            border-radius: 0.375em;
+            border: 0.0625em solid #ccc;
+            outline: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .panel-content .music-btn {
+            background-color: #e6e9e7;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .panel-content .music-btn:hover {
+            background-color: #a1a3a2;
+        }
+
+        .panel-content .setup-section button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .panel-content .setup-section button:hover {
+            background-color: #0056b3;
+        }
+
+        .panel-content .setup-section input {
+            border: 0.0625em solid #ccc;
+            padding: 0.375em;
+            width: 5em;
+        }
+
+        /* Hiện nội dung khi toggle */
+        .panel-content.show {
+            display: flex;
+        }
+
+		/* ===== RESPONSIVE DESIGN ===== */
+
+		/* Responsive cho tablet */
+		@media (max-width: 48em) {
+			.container {
+				padding: 1.875em 1.25em;
+			}
+
+			button {
+				padding: 0.625em 1.5625em;
+				font-size: 1em;
+			}
+
+			#startBtn {
+				font-size: 1.1em;
+				padding: 0.75em 1.875em;
+			}
+
+			.bell-container {
+				margin: 1.25em auto;
+			}
+
+			.history-numbers {
+				grid-template-columns: repeat(auto-fill, minmax(3.4375em, 4.0625em));
+				gap: 0.5em;
+				padding: 0.625em;
+				max-height: 18.75em;
+			}
+
+			.bottom-panel .panel-icon {
+				width: 5em;
+				height: 5em;
+			}
+
+			.bottom-panel .panel-icon img {
+				width: 3.75em;
+				height: 3.75em;
+			}
+		}
+
+		/* Responsive cho mobile */
+		@media (max-width: 30em) {
+			body {
+				padding: 0.3125em;
+			}
+
+			.container {
+				padding: 1.25em 0.9375em;
+				border-radius: 0.9375em;
+				margin: 0.625em auto;
+			}
+
+			.setup-section {
+				gap: 0.625em;
+				margin-bottom: 1.25em;
+			}
+
+			.input-group {
+				flex-direction: column;
+				gap: 0.5em;
+				width: 100%;
+			}
+
+			label {
+				font-size: 0.95em;
+			}
+
+			input[type="number"] {
+				width: 100%;
+				max-width: 9.375em;
+				padding: 0.625em 0.9375em;
+				font-size: 1em;
+			}
+
+			button {
+				padding: 0.625em 1.25em;
+				font-size: 0.9em;
+				width: 100%;
+				max-width: 12.5em;
+			}
+
+			#startBtn {
+				font-size: 1em;
+				padding: 0.75em 1.5625em;
+			}
+
+			.button-group {
+				flex-direction: column;
+				align-items: center;
+				gap: 0.3125em;
+			}
+
+			.bell-container {
+				margin: 0.9375em auto;
+			}
+
+			#numberWrapper {
+				top: 56%;
+				left: 52%;
+			}
+
+			.info-section {
+				grid-template-columns: 1fr;
+				gap: 0.9375em;
+				margin: 1.25em 0;
+			}
+
+			.info-box {
+				padding: 0.9375em;
+			}
+
+			.info-box h3 {
+				font-size: 0.8em;
+			}
+
+			.info-box p {
+				font-size: 1.5em;
+			}
+
+			.history-section h3 {
+				font-size: 1.1em;
+			}
+
+			.history-numbers {
+				grid-template-columns: repeat(auto-fill, minmax(3.125em, 3.75em));
+				gap: 0.375em;
+				padding: 0.5em;
+				max-height: 15.625em;
+			}
+
+			.bottom-panel {
+				bottom: 0.625em;
+				right: 0.625em;
+			}
+
+			.bottom-panel .panel-icon {
+				width: 4.375em;
+				height: 4.375em;
+			}
+
+			.bottom-panel .panel-icon img {
+				width: 3.125em;
+				height: 3.125em;
+			}
+
+			.panel-content {
+				min-width: 11.25em;
+				padding: 0.625em 0.75em;
+			}
+
+			.panel-content .music-btn,
+			.panel-content .setup-section button,
+			.panel-content .setup-section input {
+				font-size: 0.85em;
+				padding: 0.3125em 0.5em;
+			}
+		}
+
+		/* Responsive cho màn hình rất nhỏ */
+		@media (max-width: 22.5em) {
+			.container {
+				padding: 0.9375em 0.625em;
+			}
+
+			.history-numbers {
+				grid-template-columns: repeat(auto-fill, minmax(2.8125em, 3.4375em));
+				gap: 0.3125em;
+			}
+
+			.bottom-panel .panel-icon {
+				width: 3.75em;
+				height: 3.75em;
+			}
+
+			.bottom-panel .panel-icon img {
+				width: 2.8125em;
+				height: 2.8125em;
+			}
+		}
+
+		/* Landscape mode cho mobile */
+		@media (max-height: 37.5em) and (orientation: landscape) {
+			body {
+				padding: 0.3125em;
+			}
+
+			.container {
+				padding: 0.9375em;
+				margin: 0.625em auto;
+			}
+
+			.bell-container {
+				margin: 0.625em auto;
+			}
+
+			.history-numbers {
+				max-height: 12.5em;
+			}
+
+			.setup-section {
+				margin-bottom: 0.9375em;
+			}
+
+			h1 {
+				margin-bottom: 0.625em;
+			}
+		}
+
+        /* TV 75inch 4K UHD */
+        @media (min-width: 2560px) { /* ~2080px, đủ cho 2160px */
+
+            .container {
+                min-height: 70em; /* ~2080px */
+                max-width: 95em;  /* ~2400px */
+                padding: 4em 3em;
+            }
+
+            h1 img {
+                max-width: 40%;
+            }
+
+            .bell-container {
+                transform: scale(1.15);
+                margin: 3em auto;
+            }
+
+            button,
+            .setup-section button,
+            .panel-content .music-btn {
+                font-size: 1.5em;
+                padding: 0.1em 0.2em;
+            }
+
+            .info-box p {
+                font-size: 2.2em;
+            }
+
+            .history-numbers {
+                grid-template-columns: repeat(auto-fill, minmax(5em, 6em));
+                gap: 1em;
+            }
+
+            .bell {
+                max-width: 30em;
+            }
+
+            /* Chỉ chứa số – nhận animation scale */
+            #currentNumber {
+            font-size: clamp(10em, 20vw, 18em);
+            -webkit-text-stroke: clamp(0.01em, 0.5vw, 0.02em) #b30000;
+
+            text-shadow:
+                0 0 0.05em rgba(255, 255, 255, 0.9),
+                0 0 0.1em rgba(255, 0, 0, 0.7),
+            0.02em 0.02em 0.05em rgba(0, 0, 0, 0.7);
+            }
+
+            #startBtn {
+				font-size: 2em;
+			}
+
+            .history-section h3 {
+            font-size: 2.0em;
+            }
+
+            .history-numbers {
+            max-height: 40em;
+            grid-template-columns: repeat(auto-fill, minmax(6em, 4em));
+            }
+
+            .history-number {
+                width: 100%;
+                aspect-ratio: 1;
+                max-width: 5em;
+                color: white;
+                font-weight: bold;
+                font-size: clamp(2em, 8vw, 3.0em);
+            }
+
+            .bottom-panel {
+            position: fixed;
+            bottom: 1em;
+            right: 1em;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-family: Arial, sans-serif;
+            max-width: calc(100vw - 1.875em);
+        }
+
+        /* Nút toggle: icon lớn, rõ ràng, nền sáng, bo tròn */
+        .panel-icon {
+            width: 6em;
+            height:6em;
+        }
+
+        .panel-icon img {
+            width: 5em;  /* hoặc tuỳ chỉnh */
+            height: 5em;
+        }
+
+        /* Nội dung panel */
+        .panel-content {
+            margin-top: 0.625em;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.7em 1em;
+            border-radius: 0.8em;
+            box-shadow: 0 0.315em 0.315em rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            gap: 1em;
+            max-width: 30em;
+        }
+
+                /* Các nút và input nhỏ gọn */
+        .panel-content .music-btn,
+        .panel-content .setup-section button,
+        .panel-content .setup-section input {
+            font-size: 1.2em;
+        }
+
+            .panel-content .setup-section input {
+            width: 6em;
+        }
+
+        label{
+            font-size: 1.2em;
+        }
+
+        h1 img {
+            max-width: 30em;
+            min-width: 22em;
+        }
+
+        }
+
+        /* TV 75inch 4K UHD */
+        @media (min-width: 3840px) { /* ~3840px, đủ cho 3840px */
+
+            .container {
+                min-height: 100em; /* ~2080px */
+                max-width: 150em;  /* ~2400px */
+                padding: 4em 3em;
+            }
+
+            h1 img {
+                max-width: 60%;
+            }
+
+            .bell-container {
+                transform: scale(1.15);
+                margin: 3em auto;
+            }
+
+            button,
+            .setup-section button,
+            .panel-content .music-btn {
+                font-size: 1.5em;
+                padding: 0.1em 0.2em;
+            }
+
+            .info-box p {
+                font-size: 2.2em;
+            }
+
+            .history-numbers {
+                grid-template-columns: repeat(auto-fill, minmax(5em, 6em));
+                gap: 1em;
+            }
+
+            .bell {
+                max-width: 50em;
+            }
+
+            /* Chỉ chứa số – nhận animation scale */
+            #currentNumber {
+            font-size: clamp(11em, 40vw, 23em);
+            -webkit-text-stroke: clamp(0.01em, 0.5vw, 0.02em) #b30000;
+
+            text-shadow:
+                0 0 0.05em rgba(255, 255, 255, 0.9),
+                0 0 0.1em rgba(255, 0, 0, 0.7),
+            0.02em 0.02em 0.05em rgba(0, 0, 0, 0.7);
+            }
+
+            #startBtn {
+				font-size: 3em;
+			}
+
+            .history-section h3 {
+            font-size: 2.0em;
+            }
+
+            .history-numbers {
+            max-height: 40em;
+            grid-template-columns: repeat(auto-fill, minmax(8em, 6em));
+            }
+
+            .history-number {
+                width: 100%;
+                aspect-ratio: 1;
+                max-width: 5em;
+                color: white;
+                font-weight: bold;
+                font-size: clamp(3em, 8vw, 4.0em);
+            }
+
+            .bottom-panel {
+            position: fixed;
+            bottom: 1em;
+            right: 1em;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-family: Arial, sans-serif;
+            max-width: calc(100vw - 1.875em);
+        }
+
+        /* Nút toggle: icon lớn, rõ ràng, nền sáng, bo tròn */
+        .panel-icon {
+            width: 12em;
+            height:12em;
+        }
+
+        .panel-icon img {
+            width: 10em;  /* hoặc tuỳ chỉnh */
+            height: 10em;
+        }
+
+        /* Nội dung panel */
+        .panel-content {
+            margin-top: 0.625em;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.7em 1em;
+            border-radius: 0.8em;
+            box-shadow: 0 0.315em 0.315em rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            gap: 1.2em;
+            min-width: 40em;
+        }
+
+                /* Các nút và input nhỏ gọn */
+        .panel-content .music-btn,
+        .panel-content .setup-section button,
+        .panel-content .setup-section input {
+            font-size: 2em;
+        }
+
+            .panel-content .setup-section input {
+            width: 8em;
+        }
+
+        label{
+            font-size: 2em;
+        }
+
+        h1 img {
+            max-width: 40em;
+            min-width: 30em;
+        }
+
+        }
+    
+
+
+
