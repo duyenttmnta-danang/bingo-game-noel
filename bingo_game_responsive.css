@@ -841,7 +841,7 @@
             }
 
             .history-numbers {
-            max-height: 40em;
+            max-height: 21em;
             grid-template-columns: repeat(auto-fill, minmax(6em, 4em));
             }
 
@@ -979,7 +979,7 @@
             }
 
             .history-numbers {
-            max-height: 40em;
+            max-height: 27em;
             grid-template-columns: repeat(auto-fill, minmax(8em, 6em));
             }
 
@@ -1049,7 +1049,7 @@
         }
 
         .history-section {
-            margin-top: 10em;
+            margin-top: 8em;
         }
 
         }
