@@ -77,8 +77,8 @@
     position: relative;
     display: inline-block;
 
-    margin-top: -2.4em;   /* đẩy lên khỏi container */
-    margin-bottom: 1.5em; /* cách chuông bên dưới */
+    margin-top: -1.5em;   /* đẩy lên khỏi container */
+    margin-bottom: 1.0em; /* cách chuông bên dưới */
 }
 
 /* Ảnh */
@@ -94,7 +94,7 @@
     position: absolute;
 
     width: 4px;
-    height: 2.8em;
+    height: 4em;
 
     background: linear-gradient(
         to bottom,
@@ -102,7 +102,7 @@
         #ff4d4d
     );
 
-    top: -2.8em;
+    top: -4em;
     left: 50%;
     transform: translateX(-50%);
 
@@ -909,6 +909,10 @@
             max-width: 30em;
             min-width: 22em;
         }
+        .title-hang::before{
+            height: 10em;
+            top: -9em;
+        }
 
         }
 
@@ -1050,6 +1054,10 @@
 
         .history-section {
             margin-top: 8em;
+        }
+
+        .title-hang::before{
+            height: 4em;
         }
 
         }
