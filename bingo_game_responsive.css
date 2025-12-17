@@ -695,13 +695,17 @@
         @media (min-width: 2560px) { /* ~2080px, đủ cho 2160px */
 
             .container {
-                min-height: 70em; /* ~2080px */
-                max-width: 95em;  /* ~2400px */
-                padding: 4em 3em;
+                max-height: 70em; /* ~2080px */
+                max-width: 100em;  /* ~2400px */
+                padding: 2em 1.5em;
             }
 
             h1 img {
                 max-width: 40%;
+            }
+
+            h1 {
+                margin-bottom: 5%;
             }
 
             .bell-container {
@@ -726,12 +730,12 @@
             }
 
             .bell {
-                max-width: 30em;
+                max-width: 28em;
             }
 
             /* Chỉ chứa số – nhận animation scale */
             #currentNumber {
-            font-size: clamp(10em, 20vw, 18em);
+            font-size: clamp(10em, 20vw, 14em);
             -webkit-text-stroke: clamp(0.01em, 0.5vw, 0.02em) #b30000;
 
             text-shadow:
@@ -824,13 +828,14 @@
         @media (min-width: 3840px) { /* ~3840px, đủ cho 3840px */
 
             .container {
-                min-height: 100em; /* ~2080px */
+                min-height: 105em; /* ~2080px */
                 max-width: 150em;  /* ~2400px */
                 padding: 4em 3em;
             }
 
             h1 img {
                 max-width: 60%;
+                margin-bottom: 3em;
             }
 
             .bell-container {
@@ -860,7 +865,7 @@
 
             /* Chỉ chứa số – nhận animation scale */
             #currentNumber {
-            font-size: clamp(11em, 40vw, 23em);
+            font-size: clamp(11em, 40vw, 20em);
             -webkit-text-stroke: clamp(0.01em, 0.5vw, 0.02em) #b30000;
 
             text-shadow:
