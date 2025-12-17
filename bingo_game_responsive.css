@@ -27,7 +27,7 @@
             border-radius: 3%;
             padding: 1% 1.5%;
             box-shadow: 0 2% 6% rgba(0, 0, 0, 0.3);
-            max-width: 55%;
+            max-width: 75%;
             max-height: 85%;
             width: 100%;
             position: relative;
@@ -67,6 +67,94 @@
             display: block;
             margin: 0 auto;
         }
+
+        .bingo-title {
+    text-align: center;
+}
+
+/* Wrapper treo ảnh */
+.title-hang {
+    position: relative;
+    display: inline-block;
+
+    margin-top: -2.4em;   /* đẩy lên khỏi container */
+    margin-bottom: 1.5em; /* cách chuông bên dưới */
+}
+
+/* Ảnh */
+.title-hang img {
+    max-width: 80%;
+    height: auto;
+    display: block;
+}
+
+/* SỢI DÂY TREO */
+.title-hang::before {
+    content: "";
+    position: absolute;
+
+    width: 4px;
+    height: 2.8em;
+
+    background: linear-gradient(
+        to bottom,
+        #b30000,
+        #ff4d4d
+    );
+
+    top: -2.8em;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border-radius: 2px;
+}
+
+.title-hang {
+    position: relative;
+    display: inline-block;
+}
+
+.title-hang::after {
+    content: "";
+    position: absolute;
+
+    width: 0.5em;
+    height: 0.5em;
+
+    background: #733939;
+    border: 0.15em solid #ccc9c9;
+
+    border-radius: 50%;
+
+    top: 0.5em;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.card-image {
+    /* nền kính mờ */
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    /* khoảng đệm */
+    padding: 0.1em 0.1em;
+
+    /* bo góc */
+    border-radius: 0.9em;
+
+    /* viền mảnh */
+    border: 0.06em solid rgba(240, 232, 232, 0.45);
+
+    /* bóng rất nhẹ */
+    box-shadow:
+        0 0.3em 0.6em rgba(0, 0, 0, 0.18);
+
+    display: inline-block;
+}
+
+
+
 
         .setup-section {
             display: flex;
@@ -251,7 +339,7 @@
         }
 
         .history-section {
-            margin-top: 0.5em;
+            margin-top: 3em;
         }
 
         .history-section h3 {
@@ -266,7 +354,7 @@
             grid-template-columns: repeat(auto-fill, minmax(60px, 70px));
             justify-content: center;
             gap: 0.5em;
-            max-height: 15.4em;
+            max-height: 10em;
             overflow-y: auto;
             padding: 0.75em;
             background: #d8f1da;
@@ -695,7 +783,7 @@
         @media (min-width: 2560px) { /* ~2080px, đủ cho 2160px */
 
             .container {
-                max-height: 70em; /* ~2080px */
+                max-height: 80em; /* ~2080px */
                 max-width: 100em;  /* ~2400px */
                 padding: 2em 1.5em;
             }
@@ -828,7 +916,7 @@
         @media (min-width: 3840px) { /* ~3840px, đủ cho 3840px */
 
             .container {
-                min-height: 105em; /* ~2080px */
+                min-height: 115em; /* ~2080px */
                 max-width: 150em;  /* ~2400px */
                 padding: 4em 3em;
             }
@@ -836,6 +924,14 @@
             h1 img {
                 max-width: 60%;
                 margin-bottom: 3em;
+            }
+
+            .title-hang {
+                margin-top: -4em;
+            }
+
+            .title-hang::before {
+                top: -3em;
             }
 
             .bell-container {
@@ -950,6 +1046,10 @@
         h1 img {
             max-width: 40em;
             min-width: 30em;
+        }
+
+        .history-section {
+            margin-top: 10em;
         }
 
         }
